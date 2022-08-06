@@ -1,0 +1,10 @@
+1: login to system:-> ssh deploy@longleap.one
+2: show all directore:-> ls
+3: change directory:-> cd
+4: back to previous directory:-> cd ..
+5: back to home:-> cd
+6: logout from system: exit
+7: delete file:-> rm -rf filename
+8: unzip directory:-> unzip directory_name
+9: get current file path:-> pwd
+10: file upload : scp /c/xampp/htdocs/kd/Longleap-frontend/dist.zip deploy@longleap.one:/home/deploy/app 

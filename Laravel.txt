@@ -1,0 +1,82 @@
+//For clearing Laravel cache
+php artisan config:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:clear
+php artisan view:cache
+
+//sail command
+alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+
+//php laravel command
+//laravel ^7
+composer create-project --prefer-dist laravel/laravel:^7.0 blog
+//laravel ^8
+composer create-project laravel/laravel:^8.0
+//sass loader bug fix
+npm install laravel-mix@latest
+
+and remove(--no-progress --hide-modules) of development and production script from pakage.json file.
+
+cd project_name
+php artisan serve
+
+//Authentication
+composer require laravel/ui:^2.4
+// Generate login / registration scaffolding...
+php artisan ui bootstrap --auth
+
+//Model,Migration and Controller
+php artisan make:migration migrationName
+php artisan migrate
+php artisan migrate:status
+php artisan migrate:rollback
+php artisan migrate:rollback --step=2
+php artisan migrate:reset
+php artisan migrate:refresh --step=3
+php artisan migrate:refresh --seed
+php artisan migrate:fresh
+php artisan migrate:fresh --seed
+
+php artisan make:controller controllerName
+php artisan make:controller controllerName -r
+php artisan make:model modelName
+php artisan make:model modelName -m
+
+php artisan make:model Model\Product -mrc
+
+//Seeder and Faker
+php artisan make:seeder UsersTableSeeder
+php artisan make:factory UserFactory
+
+php artisan db:seed
+php artisan db:seed --class=UsersTableSeeder
+
+//Vendor publish
+php artisan vendor:publish 
+
+
+//UserPolicy
+php artisan make:policy UserPolicy -m User
+
+//Image Intervension
+composer require intervention/image
+Intervention\Image\ImageServiceProvider::class
+'Image' => Intervention\Image\Facades\Image::class
+
+
+//Dom pdf
+composer require barryvdh/laravel-dompdf
+Barryvdh\DomPDF\ServiceProvider::class,
+'PDF' => Barryvdh\DomPDF\Facade::class,
+ 
+//Spatie multiple search
+composer require spatie/laravel-searchable
+
+//vue loader problem solve
+npm i vue-loader
+npm install --save vue@next && npm install --save-dev vue-loader@next
+
+//jQuery datatable in vue js
+npm install jquery datatables.net-dt bootstrap
+
