@@ -1,0 +1,133 @@
+user: ssh root@104.237.11.68
+password: F6xESU4GRdsKce
+
+
+===== Now install Apache =====
+
+//update app
+sudo apt update
+
+//install apache
+sudo apt install apache2
+
+//show ufw((Uncomplicated Firewall) app list
+sudo ufw app list
+
+//install  ufw
+sudo apt install ufw
+
+//check ufw status
+sudo ufw status
+
+//add openSSH in ufw
+sudo ufw allow OpenSSH
+
+//add ssh in ufw
+sudo ufw allow ssh
+
+//Check all added rules before starting the firewall:
+sudo ufw show added
+
+//Deleting rules by rule name:
+sudo ufw delete allow ftp
+
+// Show ufw rules, along with their numbers:
+sudo ufw status numbered
+
+//Delete rules by specifying their numbers:
+sudo ufw status numbered
+sudo ufw delete 2
+
+//allow apache in ufw
+sudo ufw allow in "Apache"
+
+//install curl 
+sudo apt update
+sudo apt install curl
+
+//check curl status
+curl
+
+//check your ip address by using curl
+curl http://icanhazip.com
+
+//then test the ip address in web browser
+
+
+==== Finally Apache is installed successfully =====
+
+=====Now install Mariadb Database=====
+
+//install mariadb
+sudo apt update
+sudo apt install mariadb-server
+
+//Ensure that MariaDB is running with the systemctl start command:
+sudo systemctl start mariadb.service
+
+//Run the security script:
+sudo mysql_secure_installation
+then press enter 
+then press n
+
+//login to mariadb as a root
+sudo mariadb
+
+//create new database user
+GRANT ALL PRIVILEGES ON *.* TO 'db_user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL ON *.* TO 'glanzon'@'localhost' IDENTIFIED BY '@glanzon#admin#2022@' WITH GRANT OPTION;
+
+//Flush the privileges to ensure that they are saved and available in the current session:
+FLUSH PRIVILEGES;
+
+//Following this, exit the MariaDB shell:
+exit
+
+== Testing Mariadb ====
+//check mariadb status
+sudo systemctl status mariadb
+
+//If MariaDB isn’t running, you can start it with the command:
+sudo systemctl start mariadb
+
+//Check version:
+sudo mysqladmin version
+
+//Login to newly created database user
+mysql -u da_user_name -p 
+
+//create a new database:
+CREATE DATABASE db_name;
+
+//Logout from database:
+exit
+
+==== Database setup successfully =====
+
+
+==== Now Install PHP =====
+
+//Install PHP
+sudo apt install php libapache2-mod-php php-mysql
+
+//check php version
+php -v
+
+=== Update php7 to PHP 8.0 =====
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt install php8.0
+sudo apt install libapache2-mod-php8.0 php8.0-fpm libapache2-mod-fcgid php8.0-curl php8.0-dev php8.0-gd php8.0-mbstring php8.0-zip php8.0-mysql php8.0-xml
+
+=== Update php7 to PHP 8.1 =====
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt install php8.1
+sudo apt install libapache2-mod-php8.1 php8.1-fpm libapache2-mod-fcgid php8.1-curl php8.1-dev php8.1-gd php8.1-mbstring php8.1-zip php8.1-mysql php8.1-xml
+
+
+
