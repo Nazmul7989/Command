@@ -1,0 +1,190 @@
+LAMP Stack Setup - Ubuntu
+=================================Install Apache ==========================
+
+sudo apt update
+
+=================================Check server full info ==========================
+apt install neofetch
+neofetch
+
+sudo apt install apache2
+sudo apt install ufw =======(if ufw not installed)==========
+sudo ufw status
+ufw enable
+sudo ufw app list
+i.	sudo ufw allow 'Apache Full'
+ii.	sudo ufw allow 'OpenSSH'
+
+ufw reload
+#Restart Apache Server
+sudo systemctl restart apache2
+
+Check Ip Address
+	ip addr show
+	curl icanhazip.com
+
+================================Install MySQL==============================
+user: root
+pass: @Pass#2023@
+
+sudo apt update
+
+sudo apt install mariadb-server
+sudo mysql_secure_installation 
+sudo mariadb
+ALTER USER 'root'@'localhost' IDENTIFIED BY '@Pass#2023@'; ===Set Password for root user ====
+FLUSH PRIVILEGES;
+
+Add new Database and User
+1.	mysql -u example_user -p
+2.      GRANT ALL PRIVILEGES ON *.* TO 'db_user'@'localhost' IDENTIFIED BY 'password';
+3.      GRANT ALL ON *.* TO 'glanzon'@'localhost' IDENTIFIED BY '@glanzon#admin#2022@' WITH GRANT OPTION;
+4.      FLUSH PRIVILEGES;	
+5.	SHOW DATABASES;
+
+=========================Install PHP 8.1=================================
+sudo apt update
+sudo apt install --no-install-recommends php8.1
+#check version
+php -v
+#Install php modules
+sudo apt-get install -y php8.1-cli php8.1-common php8.1-mysql php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath
+#Check php modules
+php -m
+
+
+=========================Install PHP 8.1 in another way =================================
+#Update machine 
+sudo apt update && sudo apt upgrade -y  
+#Install dependencies 
+sudo apt install software-properties-common apt-transport-https -y  
+#Add the PPA
+sudo add-apt-repository ppa:ondrej/php -y  
+#Now to install PHP 8.1 FPM and its modules 
+sudo apt install php8.1-fpm php8.1-common php8.1-mysql php8.1-xml php8.1-xmlrpc php8.1-curl php8.1-gd php8.1-imagick php8.1-cli php8.1-dev php8.1-imap php8.1-mbstring php8.1-opcache php8.1-soap php8.1-zip php8.1-intl php8.1-bcmath
+
+#Check php version
+php -v
+
+
+=============================Install Composer ==========================
+curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+HASH=`curl -sS https://composer.github.io/installer.sig`
+php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+#Check composer info
+composer
+
+=============================Install Composer in another ways ==========================
+1.	sudo apt install wget php-cli php-zip unzip
+2.	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+3.	HASH="$(wget -q -O - https://composer.github.io/installer.sig)"
+4.	php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+5.	sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+6.	composer --version
+
+=====================Install Git=============================
+apt install git
+#Check git version
+git --version
+
+
+=======================Install Nodejs and NPM ===========================
+sudo apt update
+sudo apt install nodejs
+node -v
+sudo apt install npm
+npm -v
+#Unintall node js
+sudo apt remove nodejs
+
+=======================Install Specific Nodejs Version by using node version manager(NVM) ===========================
+sudo apt update
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+source ~/.bashrc
+nvm list-remote
+nvm install v16.13.1
+nvm list
+nvm use v16.13.1
+node -v
+npm -v
+
+#Uninstall nodejs
+nvm current
+or
+nvm uninstall node_version
+
+=======================Deploy Laravel ===========================
+1.	Direct file upload
+2.	Using git
+git clone git@github.com:Nazmul7989/laravel_inertia_vue_practice.git blog
+
+Using git
+ssh-keygen -t rsa -b 4096 -C "nazmul.ns7989@gmail.com"
+cat /root/.ssh/id_rsa.pub
+git clone ssh_project_url project
+cd project
+composer install
+cp .env.example .env
+php artisan key:generate
+nano .env
+chown -R www-data:www-data storage/
+chown -R www-data:www-data bootstrap/
+php artisan migrate
+
+
+===============server setup===================================
+cd /etc/apache2/sites-available
+touch ibanklegal.com.conf
+nano ibanklegal.com.conf
+
+
+<VirtualHost *:80>
+    ServerName ibanklegal.com
+    ServerAlias www.ibanklegal.com
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/blog/public
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+#Enable new virtual host
+sudo a2ensite ibanklegal.com
+
+#Disable default.conf
+sudo a2dissite 000-default
+
+#Check server confuguration 
+sudo apache2ctl configtest
+
+#Finally, reload Apache so these changes take effect:
+sudo systemctl reload apache2
+
+===============Resart server setup===================================
+systemctl restart apache2
+
+===============Install SSL Certificates ===================================
+sudo ufw status
+sudo ufw allow 'Apache Full'
+sudo ufw delete allow 'Apache HTTP'
+sudo ufw status
+apt install certbot python3-certbot-apache
+certbot --apache 
+
+
+=============== Create New User ===================================
+#For Root User
+adduser user_name
+#For Non Root User
+sudo adduser user_name
+#Check user group
+groups user_name
+#Make root user for Root User
+usermod -aG sudo user_name
+#Make root user for Non Root User
+sudo usermod -aG sudo user_name
+#Delete User by Root user
+deluser user_name
+#Delete User by Non Root user
+sudo deluser user_name

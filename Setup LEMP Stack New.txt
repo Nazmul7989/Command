@@ -1,0 +1,183 @@
+LEMP Stack Setup - Ubuntu
+=================================Install Nginx ==========================
+
+sudo apt update
+
+=================================Check server full info ==========================
+apt install neofetch
+neofetch
+
+sudo apt install nginx
+sudo apt install ufw =======(if ufw not installed)==========
+sudo ufw status
+ufw enable
+sudo ufw app list
+i.	sudo ufw allow 'Nginx Full'
+ii.	sudo ufw allow 'OpenSSH'
+
+ufw reload
+
+Check Ip Address
+	ip addr show
+	curl icanhazip.com
+
+================================Install MySQL==============================
+user: root
+pass: @Pass#2023@
+
+sudo apt update
+
+sudo apt install mysql-server
+sudo mysql_secure_installation 
+mysql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '@Pass#2023@'; ===Set Password for root user after running mysql ====
+
+
+Add new Database and User
+1.	mysql -u example_user -p
+2.	CREATE USER 'blog'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password_here';
+3.	GRANT ALL ON blog.* TO 'blog'@'localhost';
+4.      FLUSH PRIVILEGES;	
+5.	SHOW DATABASES;
+
+=========================Install PHP 8.1=================================
+sudo apt update
+sudo apt install --no-install-recommends php8.1
+#check version
+php -v
+#Install php modules
+sudo apt install php8.1-fpm php8.1-common php8.1-mysql php8.1-xml php8.1-xmlrpc php8.1-curl php8.1-gd php8.1-imagick php8.1-cli php8.1-dev php8.1-imap php8.1-mbstring php8.1-opcache php8.1-soap php8.1-zip php8.1-intl php8.1-bcmath
+#Check php modules
+php -m
+
+
+
+=============================Install Composer==========================
+1.  curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+2.  HASH=`curl -sS https://composer.github.io/installer.sig`
+3.  php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+4.  sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+#Check composer info
+composer
+
+=====================Install Git=============================
+apt install git
+#Check git version
+git --version
+
+=======================Install Specific Nodejs Version by using node version manager(NVM) ===========================
+sudo apt update
+1.	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh
+2.	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+3.	source ~/.bashrc
+4,	nvm list-remote
+5.	nvm install v16.13.1
+6.	nvm list
+7.	nvm use v16.13.1
+
+#Check nodejs and npm version
+node -v
+npm -v
+
+#Uninstall nodejs
+nvm current
+or
+nvm uninstall node_version
+
+=======================Deploy Laravel ===========================
+1.	Direct file upload
+scp /c/xampp/htdocs/kd/Longleap-frontend/dist.zip deploy@longleap.one:/home/deploy/app 
+
+2.	Using git
+git clone git@github.com:Nazmul7989/blog.git blog
+
+Using git
+ssh-keygen -t rsa -b 4096 -C "nazmul.ns7989@gmail.com"
+cat /root/.ssh/id_rsa.pub
+git clone ssh_project_url project
+cd project
+composer install
+cp .env.example .env
+php artisan key:generate
+nano .env
+chown -R www-data:www-data storage/
+chown -R www-data:www-data bootstrap/
+php artisan migrate
+
+
+
+
+===============server setup===================================
+cd /etc/nginx/sites-available
+nano default
+#Create new virtual host file in /etc/nginx/sites-available
+touch ibanklegal.com or touch ibanklegal
+#Enable Virtual Host or Create Symbolic Link of Virtual Host File
+sudo ln -s /etc/nginx/sites-available/ibanklegal.com /etc/nginx/sites-enabled/ibanklegal.com
+
+
+server {
+    server_name ip_address_here;
+    root /var/www/html/project/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.html index.htm index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+
+===============Resart server setup===================================
+systemctl restart nginx
+
+#Check nginx configuration
+nginx -t
+
+===============Install SSL Certificates ===================================
+sudo ufw status
+sudo ufw allow 'Nginx Full'
+sudo ufw delete allow 'Nginx HTTP'
+sudo ufw status
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d codeinbizz.com -d www.codeinbizz.com
+sudo certbot --nginx -d ibanklegal.com -d www.ibanklegal.com 
+
+
+=============== Create New User ===================================
+#For Root User
+adduser user_name
+#For Non Root User
+sudo adduser user_name
+#Check user group
+groups user_name
+#Make root user for Root User
+usermod -aG sudo user_name
+#Make root user for Non Root User
+sudo usermod -aG sudo user_name
+#Delete User by Root user
+deluser user_name
+#Delete User by Non Root user
+sudo deluser user_name

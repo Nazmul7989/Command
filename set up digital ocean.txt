@@ -1,5 +1,5 @@
 user: ssh root@104.237.11.68
-password: F6xESU4GRdsKce
+password: password
 
 
 ===== Now install Apache =====
