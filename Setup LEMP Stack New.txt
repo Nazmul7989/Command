@@ -85,6 +85,18 @@ nvm current
 or
 nvm uninstall node_version
 
+=======================Install Yarn =========================
+1.	sudo apt update
+2.	sudo apt install curl
+3.	sudo apt remove cmdtest
+4.	sudo apt remove yarn
+5.	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+6.	echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+7.	sudo apt-get update
+8.	sudo apt-get install yarn -y
+9.	yarn install
+10.	yarn --version
+
 =======================Deploy Laravel ===========================
 1.	Direct file upload
 scp /c/xampp/htdocs/kd/Longleap-frontend/dist.zip deploy@longleap.one:/home/deploy/app 
@@ -150,6 +162,24 @@ server {
     }
 }
 
+#Another Server info setup
+
+server{
+    listen 80;
+    listen [::]:80;
+    server_name ibanklegal.com www.ibanklegal.com;
+    root /var/www/ibanklegal/public;
+    index index.php index.html;
+    location / {
+         try_files $uri $uri/ /index.php$is_args$args;
+    }
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    }
+}
+
 ===============Resart server setup===================================
 systemctl restart nginx
 
@@ -181,3 +211,6 @@ sudo usermod -aG sudo user_name
 deluser user_name
 #Delete User by Non Root user
 sudo deluser user_name
+
+#Give folder permission
+sudo chown -R $USER /home/deploy/doctor
