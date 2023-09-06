@@ -117,7 +117,8 @@ chown -R www-data:www-data storage/
 chown -R www-data:www-data bootstrap/
 php artisan migrate
 
-
+=============== Install Redis Server ===================================
+sudo apt-get install redis-server
 
 
 ===============server setup===================================
@@ -180,6 +181,18 @@ server{
     }
 }
 
+#Server info setup for vue js
+server{
+    listen 80;
+    listen [::]:80;
+    server_name vue.ibanklegal.com www.vue.ibanklegal.com;
+    root /var/www/vue/dist;
+    index index.html index.htm index.nginx-debian.html;
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
 ===============Resart server setup===================================
 systemctl restart nginx
 
@@ -214,3 +227,4 @@ sudo deluser user_name
 
 #Give folder permission
 sudo chown -R $USER /home/deploy/doctor
+
