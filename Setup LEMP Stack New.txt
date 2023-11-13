@@ -228,3 +228,11 @@ sudo deluser user_name
 #Give folder permission
 sudo chown -R $USER /home/deploy/doctor
 
+
+=============== Some Important command ===================================
+#Extend memory limit
+export NODE_OPTIONS="--max-old-space-size=8192"
+
+#copy directory with file 
+cp -r build/* tenancy/assets/build
+
