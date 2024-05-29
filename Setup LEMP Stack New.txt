@@ -118,6 +118,8 @@ chown -R www-data:www-data bootstrap/
 php artisan migrate
 
 =============== Install Redis Server ===================================
+sudo apt-get install redis
+OR
 sudo apt-get install redis-server
 
 
@@ -235,4 +237,15 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 
 #copy directory with file 
 cp -r build/* tenancy/assets/build
+
+============ Setup Supervisor ================
+[program:horizon]
+process_name=%(program_name)s
+command=php /home/deploy/alterc/artisan horizon
+autostart=true
+autorestart=true
+user=deploy
+redirect_stderr=true
+stdout_logfile=/home/deploy/alterc/storage/logs/horizon.log
+stopwaitsecs=3600
 
