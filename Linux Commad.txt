@@ -5,6 +5,8 @@
 5: back to home:-> cd
 6: logout from system: exit
 7: delete file:-> rm -rf filename
+8: unzip directory:-> zip -r zip_filename.zip directory_name
 8: unzip directory:-> unzip directory_name
 9: get current file path:-> pwd
 10: file upload : scp /c/xampp/htdocs/kd/Longleap-frontend/dist.zip deploy@longleap.one:/home/deploy/app 
+11: file upload : >scp deploy@161.35.224.251:/home/deploy/alterc/storage/assets.zip /C:/Users/lenovo/OneDrive/Desktop/New_folder
